@@ -8,6 +8,11 @@ body {
     color: #0a0408;
 }
 
+img {
+    max-height: auto;
+    max-width: 400px;
+}
+
 #appTitle {
     text-align: center;
     margin: 0px auto;
