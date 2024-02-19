@@ -97,5 +97,5 @@ const displayMovie = (movieInfo) => {
 
     showBtns();
     likeBtn.addEventListener("click", likeMovie);
-    dislikeBtn.addEventListener("click", likeMovie);
+    dislikeBtn.addEventListener("click", dislikeMovie);
 }
