@@ -30,15 +30,19 @@ const clearCurrentMovie = () => {
     movieTextDiv.innerHTML = "";
 };
 
-// After liking movie, clear current movie and get another one
+// After liking movie, save, clear current movie and get another one
 const likeMovie = () => {
+    moviesLiked.push(currentMovie);
     clearCurrentMovie();
+    console.log(moviesLiked);
     showRandomMovie();
 };
 
-// After disliking movie, clear current movie and get another one
+// After disliking movie, save, clear current movie and get another one
 const dislikeMovie = () => {
+    moviesDisliked.push(currentMovie);
     clearCurrentMovie();
+    console.log(moviesDisliked);
     showRandomMovie();
 };
 
@@ -80,7 +84,7 @@ const createMovieOverview = (overview) => {
     return movieOverview;
 }
 
-// Return random movie from first page movies
+// Return random movie from  movies array
 const getRandomMovie = (movies) => {
     const randomIndex = Math.floor(Math.random() * movies.length);
     const randomMovie = movies[randomIndex];

@@ -1,6 +1,11 @@
 const tmdbKey = '8f9c86e8f505462dfb762e6bc1370816';
 const tmdbBaseUrl = "https://api.themoviedb.org/3";
-const playBtn = document.getElementById("playBtn");
+const likeBtn = document.getElementById("likeBtn");
+const dislikeBtn = document.getElementById("dislikeBtn");
+
+let currentMovie = "";
+let moviesLiked = [];
+let moviesDisliked = [];
 
 const getGenres = async () => {
     const genreRequestEndpoint = "/genre/movie/list";
@@ -26,7 +31,6 @@ const getGenres = async () => {
 const getMovies = async () => {
     const selectedGenre = getSelectedGenre();
     const discoverMovieEndpoint = "/discover/movie";
-    const randomPageParam = `&page=${getRandomPage()}`;
     const requestParams = `?api_key=${tmdbKey}` + `&with_genres=${selectedGenre}` + `&page=${getRandomPage()}`;
 
     const urlToFetch = tmdbBaseUrl + discoverMovieEndpoint + requestParams;
@@ -81,6 +85,10 @@ const showRandomMovie = async () => {
         const randomMovie = getRandomMovie(movies);
         const info = await getMovieInfo(randomMovie);
 
+        // Save the current movie that is being displayed
+        currentMovie = info;
+
+    
         displayMovie(info);
     } catch(error) {
         console.log(`Error while showing random movie: ${error}`);
