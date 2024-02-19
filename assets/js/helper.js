@@ -62,6 +62,15 @@ const createMovieTitle = (title) => {
     return movieTitle;
 };
 
+// Create HTML for movie title
+const createReleaseDate = (date) => {
+    const movieReleaseDate = document.createElement("p");
+    movieReleaseDate.setAttribute("id", "movieReleaseDate");
+    movieReleaseDate.innerHTML = date;
+
+    return movieReleaseDate;
+};
+
 // Create HTML for movie overview
 const createMovieOverview = (overview) => {
     const movieOverview = document.createElement("p");
@@ -79,6 +88,14 @@ const getRandomMovie = (movies) => {
     return randomMovie;
 };
 
+// Return random page of the total pages received.
+const getRandomPage = () => {
+    const maxNum = 500;
+    const randomIndex = Math.floor(Math.random() * maxNum);
+
+    return randomIndex;
+};
+
 // Uses the DOM to create HTML to display movie
 const displayMovie = (movieInfo) => {
     const moviePosterDiv = document.getElementById("moviePoster");
@@ -89,10 +106,12 @@ const displayMovie = (movieInfo) => {
     // Create HTML content using movie info
     const moviePoster = createMoviePoster(movieInfo.poster_path);
     const titleHeader = createMovieTitle(movieInfo.title);
+    const releaseDate = createReleaseDate(movieInfo.release_date);
     const overviewText = createMovieOverview(movieInfo.overview);
 
     moviePosterDiv.appendChild(moviePoster);
     movieTextDiv.appendChild(titleHeader);
+    movieTextDiv.appendChild(releaseDate);
     movieTextDiv.appendChild(overviewText);
 
     showBtns();
