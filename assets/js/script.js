@@ -5,6 +5,7 @@ const playBtn = document.getElementById("playBtn");
 const getGenres = async () => {
     const genreRequestEndpoint = "/genre/movie/list";
     const requestParams = `?api_key=${tmdbKey}`;
+
     const urlToFetch = tmdbBaseUrl + genreRequestEndpoint + requestParams;
 
     // Make request to the endpoint
@@ -12,9 +13,8 @@ const getGenres = async () => {
         const response = await fetch(urlToFetch);
         if (response.ok) {
             const jsonResponse = await response.json();
-
             const genres = jsonResponse.genres;
-            console.log(genres);
+
             return genres;
         }
         throw new Error("Error while fetching genres")
@@ -26,7 +26,8 @@ const getGenres = async () => {
 const getMovies = async () => {
     const selectedGenre = getSelectedGenre();
     const discoverMovieEndpoint = "/discover/movie";
-    const requestParams = `?api_key=${tmdbKey}` + `&with_genres=${selectedGenre}`;
+    const randomPageParam = `&page=${getRandomPage()}`;
+    const requestParams = `?api_key=${tmdbKey}` + `&with_genres=${selectedGenre}` + `&page=${getRandomPage()}`;
 
     const urlToFetch = tmdbBaseUrl + discoverMovieEndpoint + requestParams;
 
@@ -35,26 +36,54 @@ const getMovies = async () => {
         const response = await fetch(urlToFetch);
         if (response.ok) {
             const jsonResponse = await response.json();
-
             const movies = jsonResponse.results;
+
             return movies;
-        } 
+        }
         throw new Error("Error while getting movies")
     } catch(error) {
         console.log("Error while getting movies: ", error);
     }
 };
 
-const getMovieInfo = () => {
-    
+const getMovieInfo = async (movie) => {
+    const movieId = movie.id;
+    const movieEndpoint = `/movie/${movieId}`;
+    const requestParams = `?api_key=${tmdbKey}`;
+
+    const urlToFetch = tmdbBaseUrl + movieEndpoint + requestParams;
+
+    // Make request to endpoint
+    try {
+        const response = await fetch(urlToFetch);
+        if (response.ok) {
+            const movieInfo = await response.json();
+
+            return movieInfo;
+        }
+        throw new Error("Error while getting details of movie");
+    } catch(error) {
+        console.log(`Error while getting details of movie: ${error}`);
+    }
 };
 
 // Get a list of movies and display the info of a random movie from the list
-const showRandomMovie = () => {
+const showRandomMovie = async () => {
     const movieInfo = document.getElementById("movieInfo");
 
     if (movieInfo.childNodes.length > 0) {
         clearCurrentMovie();
+    }
+
+    // Get the info of a random movie and display it on the website
+    try {
+        const movies = await getMovies();
+        const randomMovie = getRandomMovie(movies);
+        const info = await getMovieInfo(randomMovie);
+
+        displayMovie(info);
+    } catch(error) {
+        console.log(`Error while showing random movie: ${error}`);
     }
 };
 
